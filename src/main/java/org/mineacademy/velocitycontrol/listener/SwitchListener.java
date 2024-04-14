@@ -132,12 +132,13 @@ public final class SwitchListener {
 	 */
 	public static void broadcastPendingMessage(@NonNull Player player) {
 		final HashMap<PlayerMessage.Type, HashMap<String, String>> data = pendingMessages.remove(player.getUniqueId());
-
-		data.forEach((type, variables) -> {
-			final SyncedCache cache = SyncedCache.fromName(player.getUsername());
-			if (!cache.isVanished() || player.hasPermission("chatcontrol.bypass.reach")) {
-				PlayerMessages.broadcast(type, player, variables);
-			}
-		});
+		if (data != null) {
+			data.forEach((type, variables) -> {
+				final SyncedCache cache = SyncedCache.fromName(player.getUsername());
+				if (!cache.isVanished() || player.hasPermission("chatcontrol.bypass.reach")) {
+					PlayerMessages.broadcast(type, player, variables);
+				}
+			});
+		}
 	}
 }
